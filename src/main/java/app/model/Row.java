@@ -13,8 +13,12 @@ public class Row {
 	public void addEntry(String entry) {
 		
 	}
-	
-	public void sortEntries() {
-		
+
+	public String getName() {
+		return name;
+	}
+
+	public List<String> getEntries() {
+		return entries;
 	}
 }

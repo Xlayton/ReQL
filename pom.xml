@@ -3,4 +3,22 @@
   <groupId>edu.neumont.csc180.schrumpf.clayton</groupId>
   <artifactId>ReQL</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+ <properties>
+		<maven.compiler.source>14</maven.compiler.source>
+		<maven.compiler.target>14</maven.compiler.target>
+	</properties>
+	<repositories>
+		<repository>
+			<id>my_repo</id>
+			<name>CalculatorDemo</name>
+			<url>https://github.com/Xlayton/CalculatorDemo.git</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.5.2</version>
+		</dependency>
+	</dependencies>
 </project>
