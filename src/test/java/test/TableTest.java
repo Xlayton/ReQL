@@ -32,6 +32,7 @@ class TableTest {
 		}
 	}
 	
+	@Test
 	public void should_add_entry_to_target_row() {
 		//arrange
 		Table table = new Table("TableName", "C:\\Path", "([^;]);(.*)", new ArrayList<Row>(Arrays.asList(new Row("Row1", new ArrayList<String>()),new Row("Row2", new ArrayList<String>()))));

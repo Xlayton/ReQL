@@ -9,11 +9,14 @@ public class Table {
 	private List<Row> rows;
 	
 	public Table(String name, String filePath, String tableRule, List<Row> rows) {
-		
+		this.name = name;
+		this.filePath = filePath;
+		this.tableRule = tableRule;
+		this.rows = rows;
 	}
 	
 	public void writeEntry(String entry, int targetRowIndex) {
-		
+		this.rows.get(targetRowIndex).addEntry(entry);
 	}
 
 	public String getName() {
