@@ -1,5 +1,6 @@
 package app.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Table {
@@ -33,6 +34,50 @@ public class Table {
 
 	public List<Row> getRows() {
 		return rows;
+	}
+	
+	@Override
+	public String toString() {
+		String content = "" + this.name + "\n---------------\n";
+		for(Row row : this.rows) {
+			content += "" + row.getName() + "  ";
+		}
+		content += "\n";
+		for(int i = 0; i < this.rows.get(0).getEntries().size(); i++) {
+			for(Row row : this.rows) {
+				content += "" + row.getEntries().get(i) + "  ";
+			}
+			content += "\n";
+		}
+		content += "\n---------------\n";
+		return content;
+	}
+	
+	public String toString(String...rows) {
+		String content = "" + this.name + "\n---------------\n";
+		boolean isMatch = false;
+		List<Row> selectedRows = new ArrayList<Row>();
+		for(int i = 0; i < rows.length; i++) {
+			for(Row row : this.rows) {
+				if(row.getName().equals(rows[i])) {
+					isMatch = true;
+					selectedRows.add(row);
+					content += "" + row.getName() + "  ";
+				}
+			}
+			if(!isMatch) {
+				throw new IllegalArgumentException("No row with the name " + rows[i]);
+			}
+			isMatch = false;
+		}
+		for(int i = 0; i < selectedRows.get(0).getEntries().size(); i++) {
+			for(Row row : selectedRows) {
+				content += "" + row.getEntries().get(i) + "  ";
+			}
+			content += "\n";
+		}
+		content += "\n---------------\n";
+		return content;
 	}
 	
 	
