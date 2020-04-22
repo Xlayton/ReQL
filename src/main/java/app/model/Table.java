@@ -59,6 +59,8 @@ public class Table {
 		List<Row> selectedRows = new ArrayList<Row>();
 		for(int i = 0; i < rows.length; i++) {
 			for(Row row : this.rows) {
+				System.out.println("Row name: " + row.getName());
+				System.out.println("Requested name: " + rows[i]);
 				if(row.getName().equals(rows[i])) {
 					isMatch = true;
 					selectedRows.add(row);
@@ -70,6 +72,7 @@ public class Table {
 			}
 			isMatch = false;
 		}
+		content += "\n";
 		for(int i = 0; i < selectedRows.get(0).getEntries().size(); i++) {
 			for(Row row : selectedRows) {
 				content += "" + row.getEntries().get(i) + "  ";

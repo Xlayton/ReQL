@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class CommandUtil {
 	private static BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
 	private static String createRegex = "CREATE\\s+TABLE\\s+['\"]?(?<tablename>[^'\"]+)['\"]?\\s*\\(\\s*(?<rownames>\\s*(?:[^\\)\\,]+)\\s*(?:\\,[^\\)\\,]+)*)\\s*\\)\\s*:\\s*line\\sformat\\s\\/(?<linerule>[^\\/]+)\\/\\s+file\\s['\"](?<filepath>[^'\"]+)['\"]\\s*;";
-	private static String selectRegex = "SELECT\\s+(?<selectedrows>(?:[^,\\s]+)(?:\\,\\s*[^,\\s]+)*)\\s+FROM\\s+(?<tablename>\\w+)\\s*;";
+	private static String selectRegex = "SELECT\\s+(?<selectedrows>(?:[^,\\s]+)(?:\\,\\s*[^,\\s]+)*)\\s+FROM\\s+['\"](?<tablename>\\w+)['\"]\\s*;";
 	
 	public static boolean promptForCommand() {
 		String command = "";
@@ -35,14 +35,25 @@ public class CommandUtil {
 			Matcher createMatch = createPattern.matcher(input);
 			createMatch.matches();
 			String tableName = createMatch.group("tablename");
-			List<String> rowNames = new ArrayList<String>(Arrays.asList(createMatch.group("rownames").split(",\\s*")));
-			rowNames.forEach(name -> name.strip());
+			List<String> rowNames = new ArrayList<String>(Arrays.asList(createMatch.group("rownames").split(",")));
+			rowNames.replaceAll(String::trim);
 			String tableRule = createMatch.group("linerule");
 			String filePath = createMatch.group("filepath");
 			TableUtil.createTable(tableName, filePath, tableRule, rowNames);
 			return true;
 		} else if(input.matches(selectRegex)){
-			System.out.println("Select time");
+			Pattern selectPattern = Pattern.compile(selectRegex);
+			Matcher selectMatcher = selectPattern.matcher(input);
+			selectMatcher.matches();
+			String tableName = selectMatcher.group("tablename");
+			String selectedRowsRaw = selectMatcher.group("selectedrows");
+			if(selectedRowsRaw.contains("*")) {
+				System.out.println(TableUtil.selectAllRowsFromTable(tableName));
+			} else {
+				List<String> rowNames = new ArrayList<String>(Arrays.asList(selectedRowsRaw.split(",")));
+				rowNames.replaceAll(String::trim);
+				System.out.println(TableUtil.selectRowsFromTable(tableName, rowNames.toArray(new String[0])));
+			}
 			return true;
 		} else if(input.matches("quit\\s*;") || input.matches("exit\\s*;")) {
 			System.out.println("Goodbye");

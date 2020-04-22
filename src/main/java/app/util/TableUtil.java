@@ -14,7 +14,7 @@ import app.model.Table;
 
 public class TableUtil {
 
-	public static Table currentTable;
+	public static List<Table> loadedTables = new ArrayList<Table>();
 
 	public static void createTable(String tableName, String filePath, String tableRule, List<String> rowNames) {
 		BufferedReader fileReader;
@@ -56,7 +56,34 @@ public class TableUtil {
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Too many groups for rows specified");
 		}
-		currentTable = t;
+		for(Table table : loadedTables) {
+			if(table.getName().equals(t.getName())) {
+				System.out.println("Table with name '" + t.getName() + "' already exists");
+				return;
+			}
+		}
+		loadedTables.add(t);
 		System.out.println("Table Created");
+	}
+	
+	public static String selectRowsFromTable(String tableName, String...rows) {
+		Table selectedTable = null;
+		for(Table table : loadedTables) {
+			if(table.getName().equals(tableName)) {
+				selectedTable = table;
+				break;
+			}
+		}
+		return selectedTable != null ? selectedTable.toString(rows) : "No table with name '" + tableName + "' has been created";
+	}
+	public static String selectAllRowsFromTable(String tableName) {
+		Table selectedTable = null;
+		for(Table table : loadedTables) {
+			if(table.getName().equals(tableName)) {
+				selectedTable = table;
+				break;
+			}
+		}
+		return selectedTable != null ? selectedTable.toString() : "No table with name '" + tableName + "' has been created";
 	}
 }
